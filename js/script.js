@@ -28,16 +28,22 @@ const fetchedUserInfo = (data) => {
     </div> `;
 
     overview.append(div);
+    fetchRepoList();
 };
 
-/*
-
 const fetchRepoList = async () => {
-  const fetchRepos = await fetch (`https://api.github.com/users/${username}repos?sort=updated%20per_page&limit=100`);
+  const fetchRepos = await fetch (`https://api.github.com/users/${username}/repos?sort=updated%20per_paget=100`);
   const repoData = await fetchRepos.json();
-  console.log(fetchRepoList);
-  fetchRepoList(repoData);
+  displayRepoInfo(repoData);
 }; 
 
-*/
+//QUESTION: Are there security issues with putting HTML in your JS?
+const displayRepoInfo = (repos) => {
+  for(const repo of repos) {
+    const repoItem = document.createElement("li");
+    repoItem.classList.add("li");
+    repoItem.innerHTML = `<h3>${repo.name}`;
+    repoList.append(repoItem);
+  }
+}
 

@@ -1,5 +1,7 @@
 const overview = document.querySelector(".overview");
 const repoList = document.querySelector(".repo-list");
+const repos = document.querySelector(".repos");
+const repoData = document.querySelector(".repos-data");
 
 const username = "EowynFawn";
 
@@ -45,5 +47,26 @@ const displayRepoInfo = (repos) => {
     repoItem.innerHTML = `<h3>${repo.name}`;
     repoList.append(repoItem);
   }
-}
+};
+
+
+repoList.addEventListener("click", (e) => {
+  if(e.target.matches("h3")) {
+    const repoName = e.target.innerText;
+    getRepoInfo(repoName);
+  }
+});
+
+const getRepoInfo = async (repoName) => {
+  const fetchInfo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+  const repoInfo = await fetchInfo.json();
+  console.log(repoInfo);
+  const fetchLanguages = await fetch(repoInfo.languages_url)
+  const languageData = await fetchLanguages.json();
+  console.log(languageData);
+};
+
+
+
+
 

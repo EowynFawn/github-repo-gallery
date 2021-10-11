@@ -1,7 +1,7 @@
 const overview = document.querySelector(".overview");
 const repoList = document.querySelector(".repo-list");
 const repos = document.querySelector(".repos");
-const repoData = document.querySelector(".repos-data");
+const repoData = document.querySelector(".repo-data");
 
 const username = "EowynFawn";
 
@@ -64,7 +64,32 @@ const getRepoInfo = async (repoName) => {
   const fetchLanguages = await fetch(repoInfo.languages_url)
   const languageData = await fetchLanguages.json();
   console.log(languageData);
+
+  const languages = [];
+  for(const language in languageData) {
+    languages.push(language)
+  }
+  displaySpecificRepoData(repoInfo, languages);
+ 
 };
+
+const displaySpecificRepoData = (repoInfo, languages) => {
+  repoData.innerHTML = "";
+  repoData.classList.remove("hide");
+  repos.classList.add("hide");
+  const div = document.createElement("div");
+  div.innerHTML = `
+    <h3>Name: ${repoInfo.name}</h3>
+      <p>Description: ${repoInfo.description}</p>
+      <p>Default Branch: ${repoInfo.default_branch}</p>
+      <p>Languages: ${languages.join(", ")}</p>
+      <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
+      `;
+  repoData.append(div);
+};
+
+
+
 
 
 

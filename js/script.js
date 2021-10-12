@@ -95,7 +95,7 @@ const displaySpecificRepoData = (repoInfo, languages) => {
 viewReposButton.addEventListener("click", (e) => {
   allRepos.classList.remove("hide");
   repoData.classList.add("hide");
-  viewsRepoButton.classList.add("hide");
+  viewRepoButton.classList.add("hide");
 });
 
 

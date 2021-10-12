@@ -1,7 +1,9 @@
 const overview = document.querySelector(".overview");
 const repoList = document.querySelector(".repo-list");
-const repos = document.querySelector(".repos");
+const allRepos = document.querySelector(".repos");
 const repoData = document.querySelector(".repo-data");
+const viewReposButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos")
 
 const username = "EowynFawn";
 
@@ -36,15 +38,16 @@ const fetchedUserInfo = (data) => {
 const fetchRepoList = async () => {
   const fetchRepos = await fetch (`https://api.github.com/users/${username}/repos?sort=updated%20per_paget=100`);
   const repoData = await fetchRepos.json();
-  displayRepoInfo(repoData);
+  displayReposInfo(repoData);
 }; 
 
 //QUESTION: Are there security issues with putting HTML in your JS?
-const displayRepoInfo = (repos) => {
+const displayReposInfo = (repos) => {
+  filterInput.classList.remove("hide");
   for(const repo of repos) {
     const repoItem = document.createElement("li");
-    repoItem.classList.add("li");
-    repoItem.innerHTML = `<h3>${repo.name}`;
+    repoItem.classList.add("repo");
+    repoItem.innerHTML = `<h3>${repo.name}</h3>`;
     repoList.append(repoItem);
   }
 };
@@ -74,9 +77,10 @@ const getRepoInfo = async (repoName) => {
 };
 
 const displaySpecificRepoData = (repoInfo, languages) => {
+  viewReposButton.classList.remove("hide");
   repoData.innerHTML = "";
   repoData.classList.remove("hide");
-  repos.classList.add("hide");
+  allRepos.classList.add("hide");
   const div = document.createElement("div");
   div.innerHTML = `
     <h3>Name: ${repoInfo.name}</h3>
@@ -88,6 +92,28 @@ const displaySpecificRepoData = (repoInfo, languages) => {
   repoData.append(div);
 };
 
+viewReposButton.addEventListener("click", (e) => {
+  allRepos.classList.remove("hide");
+  repoData.classList.add("hide");
+  viewsRepoButton.classList.add("hide");
+});
+
+
+//Dynamic Search
+filterInput.addEventListener("input", (e) => {
+ const searchText = e.target.value;
+ const repos = document.querySelectorAll(".repo");
+ const searchLowerCase = searchText.toLowerCase();
+
+ for(const repo of repos) {
+   const repoLowerText = repo.innerText.toLowerCase(); 
+   if(repoLowerText.includes(searchLowerCase)) {
+     repo.classList.remove("hide");
+   } else {
+     repo.classList.add("hide");
+   }
+ }
+});
 
 
 
